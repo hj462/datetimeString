@@ -34,6 +34,12 @@ app.get("/api/timestamp/:date_string?", (req, res) => {
      date = new Date(date_string);
   }
 
+  if (/\d{5,}/.test(date_string)) {
+    dateInt = parseInt(date_string);
+    //Date regards numbers as unix timestamps, strings are processed differently
+    res.json({ unix: date_string, utc: new Date(dateInt).toUTCString() });
+  }
+
   if (date.getTime()) {
     res.json({ unix: date.getTime(), utc: date.toUTCString() });
   } else {
